@@ -5,3 +5,8 @@ MSWAVEF - Code to calculate hydrogenic and non-hydrogenic momentum-space electro
 The Mathematica notebook to calculate the Hankel transforms is provided.  Also a file of tests that were performed and zipped versions of the output of some tests.
 
 Bug reports: paul.barklem@physics.uu.se
+
+Reference:
+
+Hoang Binh, D., and Henri van Regemorter. “Non-Hydrogenic Wavefunctions in Momentum Space.” Journal of Physics B: Atomic 30, no. 1 (1997): 2403–16. doi:10.1088/0953-4075/30/10/014.
+
