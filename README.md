@@ -6,6 +6,9 @@ The Mathematica notebook to calculate the Hankel transforms is provided.  Also a
 
 Bug reports: paul.barklem@physics.uu.se
 
+Please cite the DOI if you use the code in research:
+[![DOI](https://zenodo.org/badge/21607/barklem/mswavef.svg)](https://zenodo.org/badge/latestdoi/21607/barklem/mswavef)
+
 Reference:
 
 Hoang Binh, D., and Henri van Regemorter. “Non-Hydrogenic Wavefunctions in Momentum Space.” Journal of Physics B: Atomic 30, no. 1 (1997): 2403–16. doi:10.1088/0953-4075/30/10/014.
