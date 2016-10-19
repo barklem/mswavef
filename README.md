@@ -13,3 +13,4 @@ Reference:
 
 Hoang Binh, D., and Henri van Regemorter. “Non-Hydrogenic Wavefunctions in Momentum Space.” Journal of Physics B: Atomic 30, no. 1 (1997): 2403–16. doi:10.1088/0953-4075/30/10/014.
 
+.
