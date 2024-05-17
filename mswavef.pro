@@ -1,7 +1,9 @@
 ; routines for calculation of hydrogenic and non-hydrogenic QDT momentum space wavefunctions
 ;
 ; Paul Barklem 
-; written Jan-March 2010
+; Jan-March 2010 - written; original version only for neutral atoms
+; September 2015 - testing and release
+; December 2022  - extension to positive ions and testing
 ;
 ; notes:  1. QDT functions for l < 14 can be calculated easily with analytic functions,
 ;            but higher l uses series expansions which are very slow to compute
@@ -17,7 +19,7 @@ function Fnl, A, ION, n, l, p
 ; follows Bransden and Joachain, Physics of Atoms and Molecules, 2nd edition appendix 5
 ;
 ; where:
-; A is the atomic mass
+; A is the atomic mass in units of proton mass
 ; ION is the total charge on the atom (0 = neutral, 1=singly ionised)
 ; n, l are usual quantum numbers
 ; p is momentum in au
@@ -30,13 +32,14 @@ nd = double(n)
 ld = double(l)
 n2ps2 = nd*nd*ps*ps
 
+normcorr = (ZZ*pmu)^(-1.5d0)             ; normalisation correction for charged case
 part1 = sqrt(2.d0*factorial(n-l-1)/!pi/factorial(n+l))
 part2 = nd*nd*2.d0^(2*ld+2)*factorial(l)
 part3 = nd^ld*ps^ld/((n2ps2+1.d0)^(ld+2))
 x = (n2ps2-1.d0)/(n2ps2+1.d0)
 part4 = Gegenbauer(x,l+1,n-l-1)
 
-return, part1 * part2 * part3 * part4
+return, part1 * part2 * part3 * part4 * normcorr
 end
 
 function gegenbauer, x, alpha, n
@@ -475,8 +478,10 @@ endif
 return, b
 end
 
-function gwf, nu, l, q
-; the QDT non-hydrogenic wavefunction in momentum space, following Hoang Binh and van Regemorter (1997)
+function gwf_neutral, nu, l, q
+; the QDT non-hydrogenic wavefunction in momentum space, 
+; for a valence electron in a neutral atom (core Z=1)
+; following Hoang Binh and van Regemorter (1997)
 ; where: 
 ; nu is the effective principal quantum number
 ; l  is angular momentum quantum number
@@ -484,6 +489,7 @@ function gwf, nu, l, q
 ; normalisation is Integral |g|^2 q^2 dq = 1
 ;
 ; note due to machine numerical precision limits, if nu > 24, we use the nearest hydrogenic wavefunction
+; presently doesn't account for reduced mass effects, i.e. assumes infinite mass, but effects small even for hydrogen 
 
 nud = double(nu)
 nq = n_elements(q)
@@ -491,7 +497,7 @@ wf = dblarr(nq)
 
 if (nu gt 20.) or (abs(nu mod 1) lt 0.001) then begin     ; numerical precision limits QDT wf calc to about n*~25
                                                           ; also use exact analytic expression if integer nu value (n*)
-   wf = Fnl(1., 0, round(nu), l, q)
+   wf = Fnl(1000., 0, round(nu), l, q)                    ; large mass to approximate infinite
 endif else begin
 
 t0 = fix(nud + l + 1.) 
@@ -514,8 +520,26 @@ endelse
 return, wf
 end
 
-function gwfsq, nu, l, q
+function gwf, ion, nu, l, q
+; the QDT non-hydrogenic wavefunction in momentum space, 
+; for ion through rescaling of neutral case 
+; following Bransden and Joachain, Physics of Atoms and Molecules, 2nd edition appendix 5
+; 
+; where: 
+; ion is the total charge on the atom (0 = neutral, 1=singly ionised)
+; nu is the effective principal quantum number
+; l  is angular momentum quantum number
+; q  is momentum in atomic units  (can be an array)
+; normalisation is Integral |g|^2 q^2 dq = 1
+
+Z = ion+1  ; core charge
+wf = gwf_neutral(nu, l, q/Z) / (Z^1.5d0)
+return, wf 
+end
+
+function gwfsq_neutral, nu, l, q
 ; generate a best estimate of square of wavefunction 
+; for the neutral atom case
 
 nud = double(nu)
 nq = n_elements(q)
@@ -546,10 +570,10 @@ for i = 0, nq-1 do begin
       wf[i] = 0.d0 
    endif else begin
       if (q[i] lt qmax) and (q[i] gt qmin) then begin  ; use QDT
-         wf[i] = gwf(nud, l, q[i])^2.
+         wf[i] = gwf_neutral(nud, l, q[i])^2.
       endif else begin                                 ; linear interpolation between integer values for nu
-         ym = Fnl(1., 0, num, l, q[i])^2.
-         yp = Fnl(1., 0, nup, l, q[i])^2.
+         ym = Fnl(1000., 0, num, l, q[i])^2.           ; large mass to approximate infinite
+         yp = Fnl(1000., 0, nup, l, q[i])^2.
          h = (nu - num)/(nup - num)
          wf[i] = 10^(alog10(ym) + h*(alog10(yp) - alog10(ym)))
       endelse
@@ -559,6 +583,13 @@ endfor
 return, wf
 end
 
+function gwfsq, ion, nu, l, q
+; generate a best estimate of square of wavefunction 
+
+Z = ion+1  ; core charge
+wf = gwfsq_neutral(nu, l, q/Z) / (Z^3.d0)
+return, wf 
+end
 
 
 

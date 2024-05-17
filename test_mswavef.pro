@@ -57,6 +57,10 @@ stop
 end
 
 pro testgwf
+;
+; testing for neutrals, specific cases from literature
+;
+
 t = systime(1)
 q = (dindgen(100))/40
 window, 0, xsize = 1900
@@ -64,31 +68,31 @@ window, 0, xsize = 1900
 !p.charsize = 3
 ; Na 4s
 ns = 2.64
-plot, q, q*gwf(ns, 0, q), ytitle = "q*g(q)", xtitle = 'q (au)', title = 'Na (4s)'
-oplot, q, q*gwf(2.0, 0, q), linestyle = 2
-oplot, q, q*gwf(3.0, 0, q), linestyle = 2
-;oplot, q, (q*gwf(2.2, 0, q))^2, linestyle = 3
-;oplot, q, (q*gwf(2.8, 0, q))^2, linestyle = 3
+plot, q, q*gwf(0, ns, 0, q), ytitle = "q*g(q)", xtitle = 'q (au)', title = 'Na (4s)'
+oplot, q, q*gwf(0, 2.0, 0, q), linestyle = 2
+oplot, q, q*gwf(0, 3.0, 0, q), linestyle = 2
+;oplot, q, (q*gwf(0, 2.2, 0, q))^2, linestyle = 3
+;oplot, q, (q*gwf(0, 2.8, 0, q))^2, linestyle = 3
 oplot, q, q*Fnl(1., 0, 3, 0, q), psym = 4
 ; Na 4p
 ns = 3.13
-plot, q, q*gwf(ns, 1, q), xtitle = 'q (au)', title = 'Na (4p)'
-oplot, q, q*gwf(3.0, 1, q), linestyle = 2
+plot, q, q*gwf(0, ns, 1, q), xtitle = 'q (au)', title = 'Na (4p)'
+oplot, q, q*gwf(0, 3.0, 1, q), linestyle = 2
 oplot, q, -q*Fnl(1., 0, 3, 1, q), psym = 4
 ; Mg 6s
 ns = 4.358
-plot, q, q*gwf(ns, 0, q), title = 'Mg (6s)'
-oplot, q, q*gwf(4.0, 2, q), linestyle = 2
+plot, q, q*gwf(0, ns, 0, q), title = 'Mg (6s)'
+oplot, q, q*gwf(0, 4.0, 2, q), linestyle = 2
 oplot, q, -q*Fnl(1., 0., 4.0, 2, q), psym = 4
 ; Mg 6p
 ns = 4.86
-plot, q, q*gwf(ns, 1, q), title = 'Mg (6p)';, xr=[0,1.0], /xs
-oplot, q, q*gwf(5.0, 1, q), linestyle = 2
+plot, q, q*gwf(0, ns, 1, q), title = 'Mg (6p)';, xr=[0,1.0], /xs
+oplot, q, q*gwf(0, 5.0, 1, q), linestyle = 2
 oplot, q, -q*Fnl(1., 0, 5, 1, q), psym = 4
 ; Cs 10p
 ns = 6.43
-plot, q, q*gwf(ns, 1, q), title = 'Cs (10p)';, xr=[0,1.0], /xs
-oplot, q, q*gwf(6.0, 1, q), linestyle = 2
+plot, q, q*gwf(0, ns, 1, q), title = 'Cs (10p)';, xr=[0,1.0], /xs
+oplot, q, q*gwf(0, 6.0, 1, q), linestyle = 2
 oplot, q, q*Fnl(1., 0, 6, 1, q), psym = 4
 print, systime(1) - t, ' SECONDS'
 !p.multi = 0
@@ -96,6 +100,9 @@ print, systime(1) - t, ' SECONDS'
 end
 
 pro testgwfl
+;
+; specific cases from literature
+;   
 t = systime(1)
 q = [(dindgen(20)+1), 50.]
 ;window, 0, xsize = 1700, ysize = 1000
@@ -106,7 +113,7 @@ device, file = 'wfs.eps', ysize = 30, xsize = 45
 ; Na 4s
 l = 0
 ns = 2.1
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
@@ -115,7 +122,7 @@ plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], 
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
 print, systime(1) - t, ' SECONDS'
 ns = 5.7
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
@@ -124,7 +131,7 @@ plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], 
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs 
 print, systime(1) - t, ' SECONDS'
 ns = 12.5
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
@@ -133,7 +140,7 @@ plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], 
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
 print, systime(1) - t, ' SECONDS'
 ns = 17.3
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
@@ -144,7 +151,7 @@ print, systime(1) - t, ' SECONDS'
 
 l = 2
 ns = 5.7
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
@@ -153,7 +160,7 @@ plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], 
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
 print, systime(1) - t, ' SECONDS'
 ns = 10.0
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
@@ -162,7 +169,7 @@ plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], 
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
 print, systime(1) - t, ' SECONDS' 
 ns = 12.5
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
@@ -171,7 +178,7 @@ plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], 
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
 print, systime(1) - t, ' SECONDS'
 ns = 17.3
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
@@ -183,7 +190,7 @@ print, systime(1) - t, ' SECONDS'
 
 l = 4
 ns = 5.7
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
@@ -192,7 +199,7 @@ plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], 
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
 print, systime(1) - t, ' SECONDS'
 ns = 10.0
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
@@ -201,7 +208,7 @@ plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], 
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
 print, systime(1) - t, ' SECONDS' 
 ns = 12.5
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
@@ -210,7 +217,7 @@ plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], 
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
 print, systime(1) - t, ' SECONDS'
 ns = 17.3
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
@@ -221,7 +228,7 @@ print, systime(1) - t, ' SECONDS'
 
 l = 7
 ns = 8.3
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
@@ -230,7 +237,7 @@ plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], 
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
 print, systime(1) - t, ' SECONDS'
 ns = 10.0
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
@@ -239,7 +246,7 @@ plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], 
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
 print, systime(1) - t, ' SECONDS' 
 ns = 12.5
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
@@ -248,7 +255,7 @@ plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], 
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
 print, systime(1) - t, ' SECONDS'
 ns = 17.3
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
@@ -258,7 +265,7 @@ print, systime(1) - t, ' SECONDS'
 
 l = 13
 ns = 14.3
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
@@ -266,7 +273,7 @@ plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),ma
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
 ns = 15.0
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
@@ -274,7 +281,7 @@ plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),ma
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs 
 ns = 16.5
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
@@ -282,17 +289,17 @@ plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),ma
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
 ns = 17.3
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (q*yy)^2, ytitle = "q*g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /xlog, xr=[min(q),max(q)], /xs
 plot, q, (yy)^2, ytitle = "g(q)", xtitle = 'q (au)', /ylog, xr=[min(q),max(q)], /xs
-;plot, q, (q*gwf(2.2, 0, q))^2, /ylog, /xlog, xr=[min(q),max(q)], /xs
-;oplot, q, (q*gwf(2.8, 0, q))^2, /ylog, /xlog, xr=[min(q),max(q)], /xs
-;oplot, q, (q*gwf(2.0, 0, q))^2, /ylog, /xlog, xr=[min(q),max(q)], /xs
-;oplot, q, (q*gwf(3.0, 0, q))^2, /ylog, /xlog, xr=[min(q),max(q)], /xs
+;plot, q, (q*gwf(0, 2.2, 0, q))^2, /ylog, /xlog, xr=[min(q),max(q)], /xs
+;oplot, q, (q*gwf(0, 2.8, 0, q))^2, /ylog, /xlog, xr=[min(q),max(q)], /xs
+;oplot, q, (q*gwf(0, 2.0, 0, q))^2, /ylog, /xlog, xr=[min(q),max(q)], /xs
+;oplot, q, (q*gwf(0, 3.0, 0, q))^2, /ylog, /xlog, xr=[min(q),max(q)], /xs
 ;oplot, q, (q*Fnl(1., 0, 3, 0, q))^2, psym = 4
 print, systime(1) - t, ' SECONDS'
 device, /close_file
@@ -300,23 +307,23 @@ set_plot, 'x'
 stop
 ; Na 4p
 ns = 3.13
-plot, q, (gwf(ns, 1, q))^2, /ylog, /xlog, xr=[min(q),max(q)], /xs
-oplot, q, (gwf(3.0, 1, q))^2, linestyle = 2
+plot, q, (gwf(0, ns, 1, q))^2, /ylog, /xlog, xr=[min(q),max(q)], /xs
+oplot, q, (gwf(0, 3.0, 1, q))^2, linestyle = 2
 oplot, q, (Fnl(1., 0, 3, 1, q))^2, psym = 4
 ; Mg 6s
 ns = 4.358
-plot, q, (gwf(ns, 0, q))^2, /ylog, /xlog, xr=[min(q),max(q)], /xs
-oplot, q, (gwf(4.0, 0, q))^2, linestyle = 2
+plot, q, (gwf(0, ns, 0, q))^2, /ylog, /xlog, xr=[min(q),max(q)], /xs
+oplot, q, (gwf(0, 4.0, 0, q))^2, linestyle = 2
 oplot, q, (Fnl(1., 0, 4, 0, q))^2, psym = 4
 ; Mg 6p
 ns = 4.86
-plot, q, (gwf(ns, 1, q))^2, /ylog, /xlog, xr=[min(q),max(q)], /xs ;, xr=[0,1.0], /xs
-oplot, q, (gwf(5.0, 1, q))^2, linestyle = 2
+plot, q, (gwf(0, ns, 1, q))^2, /ylog, /xlog, xr=[min(q),max(q)], /xs ;, xr=[0,1.0], /xs
+oplot, q, (gwf(0, 5.0, 1, q))^2, linestyle = 2
 oplot, q, (Fnl(1., 0, 5, 1, q))^2, psym = 4
 ; Cs 10p
 ns = 6.43
-plot, q, (gwf(ns, 1, q))^2, /ylog, /xlog, xr=[min(q),max(q)], /xs ;, xr=[0,1.0], /xs
-oplot, q, (gwf(6.0, 1, q))^2, linestyle = 2
+plot, q, (gwf(0, ns, 1, q))^2, /ylog, /xlog, xr=[min(q),max(q)], /xs ;, xr=[0,1.0], /xs
+oplot, q, (gwf(0, 6.0, 1, q))^2, linestyle = 2
 oplot, q, (Fnl(1., 0, 6, 1, q))^2, psym = 4
 print, systime(1) - t, ' SECONDS'
 !p.multi = 0
@@ -336,37 +343,37 @@ device, file = 'wfs.eps', xsize = 28, xoffset=1, yoffset = 29, /landscape
 !p.charsize = 1.5
 
 ns = 20.0
-yy = gwf(ns, 0, q)
+yy = gwf(0, ns, 0, q)
 plot, q, (yy)^2, ytitle = "g(q)^2", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')
 for ns = 3.0, 20.0, 1.0 do begin
-yy = gwf(ns, 0, q)
+yy = gwf(0, ns, 0, q)
 oplot, q, (yy)^2, linestyle = 5
 endfor
 
 for ns = 3.0, 20.0, 1.0 do begin
 
-yy = gwf(ns, 0, q)
+yy = gwf(0, ns, 0, q)
 plot, q, (yy)^2, ytitle = "g(q)^2", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')
 
 for l = 1, min([13, fix(ns)-1]), 1 do begin
-oplot, q, gwf(ns, l, q)^2, linestyle = 5
+oplot, q, gwf(0, ns, l, q)^2, linestyle = 5
 end
 
 for l = 0, min([13, fix(ns)-1]), 1 do begin
 
-yy = gwf(ns, l, q)
+yy = gwf(0, ns, l, q)
 plot, q, (yy)^2, ytitle = "g(q)^2", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
-oplot, q, gwf(ns-0.5, l, q)^2, linestyle = 5
-oplot, q, gwf(ns-0.4, l, q)^2,linestyle = 5
-oplot, q, gwf(ns-0.3, l, q)^2, linestyle = 5
-oplot, q, gwf(ns-0.2, l, q)^2, linestyle = 5
-oplot, q, gwf(ns-0.1, l, q)^2, linestyle = 5
-oplot, q, gwf(ns+0.5, l, q)^2, linestyle = 1
-oplot, q, gwf(ns+0.4, l, q)^2, linestyle = 1
-oplot, q, gwf(ns+0.3, l, q)^2, linestyle = 1
-oplot, q, gwf(ns+0.2, l, q)^2, linestyle = 1
-oplot, q, gwf(ns+0.1, l, q)^2, linestyle = 1
-oplot, q, gwf(ns+0.01, l, q)^2, linestyle = 1, thick = 10
+oplot, q, gwf(0, ns-0.5, l, q)^2, linestyle = 5
+oplot, q, gwf(0, ns-0.4, l, q)^2,linestyle = 5
+oplot, q, gwf(0, ns-0.3, l, q)^2, linestyle = 5
+oplot, q, gwf(0, ns-0.2, l, q)^2, linestyle = 5
+oplot, q, gwf(0, ns-0.1, l, q)^2, linestyle = 5
+oplot, q, gwf(0, ns+0.5, l, q)^2, linestyle = 1
+oplot, q, gwf(0, ns+0.4, l, q)^2, linestyle = 1
+oplot, q, gwf(0, ns+0.3, l, q)^2, linestyle = 1
+oplot, q, gwf(0, ns+0.2, l, q)^2, linestyle = 1
+oplot, q, gwf(0, ns+0.1, l, q)^2, linestyle = 1
+oplot, q, gwf(0, ns+0.01, l, q)^2, linestyle = 1, thick = 10
 
 oplot, [2/!Pi/ns,2/!Pi/ns], [1e-30,1e30] 
 oplot, [2/!Pi/ns,2/!Pi/ns]*2, [1e-30,1e30], linestyle = 5 
@@ -396,39 +403,39 @@ device, file = 'wfs_new.eps', xsize = 28, xoffset=1, yoffset = 29, /landscape
 !p.charsize = 1.5
 
 ns = 20.0
-yy = gwfsq(ns, 0, q)
+yy = gwfsq(0, ns, 0, q)
 plot, q, yy, ytitle = "g(q)^2", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')
 for ns = 3.0, 20.0, 1.0 do begin
-yy = gwfsq(ns, 0, q)
+yy = gwfsq(0, ns, 0, q)
 oplot, q, yy, linestyle = 5
 endfor
 
 for ns = 3.0, 20.0, 1.0 do begin
 
-yy = gwfsq(ns, 0, q)
+yy = gwfsq(0, ns, 0, q)
 plot, q, yy, ytitle = "g(q)^2", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')
 
 for l = 0, min([13, fix(ns)-1]), 1 do begin
-oplot, q, gwfsq(ns, l, q), linestyle = 5
+oplot, q, gwfsq(0, ns, l, q), linestyle = 5
 end
 
 for l = 0, min([13, fix(ns)-1]), 1 do begin
 
 print, ns, l
 
-yy = gwfsq(ns, l, q)
+yy = gwfsq(0, ns, l, q)
 plot, q, yy, ytitle = "g(q)^2", xtitle = 'q (au)', /ylog, /xlog, xr=[min(q),max(q)], /xs, title = string(ns, '(f4.1)')+string(l, '(i3)')
-oplot, q, gwfsq(ns-0.5, l, q), linestyle = 5
-oplot, q, gwfsq(ns-0.4, l, q),linestyle = 5
-oplot, q, gwfsq(ns-0.3, l, q), linestyle = 5
-oplot, q, gwfsq(ns-0.2, l, q), linestyle = 5
-oplot, q, gwfsq(ns-0.1, l, q), linestyle = 5
-oplot, q, gwfsq(ns+0.5, l, q), linestyle = 1
-oplot, q, gwfsq(ns+0.4, l, q), linestyle = 1
-oplot, q, gwfsq(ns+0.3, l, q), linestyle = 1
-oplot, q, gwfsq(ns+0.2, l, q), linestyle = 1
-oplot, q, gwfsq(ns+0.1, l, q), linestyle = 1
-oplot, q, gwfsq(ns+0.01, l, q), linestyle = 1, thick = 10
+oplot, q, gwfsq(0, ns-0.5, l, q), linestyle = 5
+oplot, q, gwfsq(0, ns-0.4, l, q),linestyle = 5
+oplot, q, gwfsq(0, ns-0.3, l, q), linestyle = 5
+oplot, q, gwfsq(0, ns-0.2, l, q), linestyle = 5
+oplot, q, gwfsq(0, ns-0.1, l, q), linestyle = 5
+oplot, q, gwfsq(0, ns+0.5, l, q), linestyle = 1
+oplot, q, gwfsq(0, ns+0.4, l, q), linestyle = 1
+oplot, q, gwfsq(0, ns+0.3, l, q), linestyle = 1
+oplot, q, gwfsq(0, ns+0.2, l, q), linestyle = 1
+oplot, q, gwfsq(0, ns+0.1, l, q), linestyle = 1
+oplot, q, gwfsq(0, ns+0.01, l, q), linestyle = 1, thick = 10
 
 oplot, [2/!Pi/ns,2/!Pi/ns], [1e-30,1e30] 
 oplot, [2/!Pi/ns,2/!Pi/ns]*2, [1e-30,1e30], linestyle = 5 
@@ -453,15 +460,15 @@ window, 0, xsize = 1900
 !p.multi = [0,5,1]
 !p.charsize = 3
 ns = 20.
-plot, q, q*gwf(ns, 0, q), ytitle = "q*g(q)", xtitle = 'q (au)', title = '20s'
+plot, q, q*gwf(0, ns, 0, q), ytitle = "q*g(q)", xtitle = 'q (au)', title = '20s'
 ns = 20.
-plot, q, q*gwf(ns, 1, q), xtitle = 'q (au)', title = '20p'
+plot, q, q*gwf(0, ns, 1, q), xtitle = 'q (au)', title = '20p'
 ns = 25.
-plot, q, q*gwf(ns, 0, q), xtitle = 'q (au)', title = '25s'
+plot, q, q*gwf(0, ns, 0, q), xtitle = 'q (au)', title = '25s'
 ns = 25.
-plot, q, q*gwf(ns, 1, q), xtitle = 'q (au)', title = '25p';, xr=[0,1.0], /xs
+plot, q, q*gwf(0, ns, 1, q), xtitle = 'q (au)', title = '25p';, xr=[0,1.0], /xs
 ns = 30.
-plot, q, q*gwf(ns, 1, q), xtitle = 'q (au)', title = '30p';, xr=[0,1.0], /xs
+plot, q, q*gwf(0, ns, 1, q), xtitle = 'q (au)', title = '30p';, xr=[0,1.0], /xs
 print, systime(1) - t, ' SECONDS'
 !p.multi = 0
 !p.charsize = 1
@@ -476,12 +483,12 @@ window, 0, xsize = 1900
 !p.multi = [0,2,1]
 !p.charsize = 3
 ns = 10.
-y1 = q*gwf(ns, 0, q)
+y1 = q*gwf(0, ns, 0, q)
 y1a = -q2*Fnl(1., 0, 10, 0, q2)
 plot, q, y1, ytitle = "q*g(q)", xtitle = 'q (au)', title = '20s'
 oplot, q, y1a, psym = 4
 print, systime(1) - t, ' SECONDS'
-y2 = q*gwf(ns, 1, q)
+y2 = q*gwf(0, ns, 1, q)
 y2a = q2*Fnl(1., 0, 20, 1, q2)
 plot, q, y2, xtitle = 'q (au)', title = '20p'
 oplot, q2, y2a, psym = 4
@@ -498,19 +505,19 @@ q = (dindgen(200))/1000.
 window, 0, xsize = 1900
 !p.multi = [0,5,1]
 !p.charsize = 3
-plot, q, q*gwf(15, 0, q), ytitle = "q*g(q)", xtitle = 'q (au)'
+plot, q, q*gwf(0, 15, 0, q), ytitle = "q*g(q)", xtitle = 'q (au)'
 oplot, q, q*Fnl(1., 0, 15, 0, q), psym = 4
 
-plot, q, q*gwf(20, 0, q)
+plot, q, q*gwf(0, 20, 0, q)
 oplot, q, -q*Fnl(1., 0, 20, 0, q), psym = 4
 
-plot, q, q*gwf(25, 0, q)
+plot, q, q*gwf(0, 25, 0, q)
 oplot, q, q*Fnl(1., 0, 25, 0, q), psym = 4
 
-plot, q, q*gwf(30, 0, q)
+plot, q, q*gwf(0, 30, 0, q)
 oplot, q, -q*Fnl(1., 0, 30, 0, q), psym = 4
 
-plot, q, q*gwf(50, 0, q)
+plot, q, q*gwf(0, 50, 0, q)
 oplot, q, q*Fnl(1., 0, 50, 0, q), psym = 4
 
 print, systime(1) - t, ' SECONDS'
@@ -524,7 +531,7 @@ q = (dindgen(1000))/2000.
 window, 0, xsize = 1900
 !p.multi = [0,1,1]
 !p.charsize = 3
-plot, q, q*gwf(9, 0, q), yr = [-4,4]
+plot, q, q*gwf(0, 9, 0, q), yr = [-4,4]
 oplot, q, q*Fnl(1., 0, 9, 0, q), psym = 4
 print, systime(1) - t, ' SECONDS'
 !p.multi = 0
@@ -539,7 +546,7 @@ window, 0, xsize = 1900
 !p.charsize = 3
 plot, q, q*Fnl(1., 0, 30, 0, q)
 ;oplot, q, q*Fnl(1., 0, 30, 0, q), linestyle = 1
-oplot, q, -q*gwf(30., 0, q), linestyle = 5
+oplot, q, -q*gwf(0, 30., 0, q), linestyle = 5
 print, systime(1) - t, ' SECONDS'
 !p.multi = 0
 !p.charsize = 1

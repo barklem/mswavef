@@ -1,0 +1,7 @@
+AA_notes.txt
+
+Working on implementing Z>1, i.e. ions.  Code currently only for neutrals following HB & vR 1997.
+
+- Done for hydrogenic.
+- Done for non-hydrogenic.  Tested results for Z=2, seem physically reasonable, and tested normalisation numerically.
+
